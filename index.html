@@ -65,8 +65,8 @@
             <h3 style="color:#00ff88;">સેટિંગ્સ</h3>
             <input type="text" id="userNameInput" placeholder="તમારું નામ">
             <select id="modelSelect">
-                <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite (સર્વોત્તમ)</option>
-                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
+                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite (Working)</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
             </select>
             <textarea id="geminiKeyInput" rows="3" placeholder="તમારી API Key અહીં નાખો"></textarea>
             <button class="save-btn" onclick="saveSettings()">સેવ અને રીલોડ</button>
@@ -86,7 +86,7 @@
     <script>
         let userName = localStorage.getItem('bn_user') || "દેવેન્દ્રભાઈ";
         let apiKey = localStorage.getItem('bn_key') || "";
-        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.0-flash-lite";
+        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.5-flash-lite"; // ૨.૫ લાઈટ મોડેલ ડિફોલ્ટ
         let lastReport = "";
 
         const videoElements = {
@@ -180,11 +180,13 @@
                     })
                 });
                 const data = await response.json();
+                if(data.error) throw new Error(data.error.message);
                 lastReport = data.candidates[0].content.parts[0].text;
                 speak(lastReport);
                 document.getElementById('pdf-btn').style.display = 'flex';
                 document.getElementById('status-text').innerText = "રિપોર્ટ તૈયાર";
             } catch (err) {
+                console.error(err);
                 speak("માફ કરશો અત્યારે કી ની લિમિટ પૂરી થઈ ગઈ છે");
             }
         }
