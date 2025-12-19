@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>બાળ નિદાન Pro - Stable</title>
+    <title>બાળ નિદાન Pro - 2.5 Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -46,17 +46,16 @@
 
     <div id="settings-modal" class="modal">
         <div class="settings-box">
-            <h3>બાળ નિદાન સેટિંગ્સ</h3>
+            <h3>સેટિંગ્સ</h3>
             <input type="text" id="userNameInput" placeholder="તમારું નામ">
             
             <select id="modelSelect">
-                <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Experimental)</option>
-                <option value="gemini-2.0-pro-exp-02-05">Gemini 2.0 Pro (Most Accurate)</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash (ઝડપી)</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro (સચોટ નિદાન)</option>
             </select>
             
-            <textarea id="geminiKeyInput" rows="4" placeholder="API Keys અહીં પેસ્ટ કરો (જો વધુ હોય તો અલ્પવિરામ , થી અલગ કરો)"></textarea>
+            <textarea id="geminiKeyInput" rows="3" placeholder="API Keys અહીં પેસ્ટ કરો (જો વધુ હોય તો , થી અલગ કરો)"></textarea>
             <button class="save-btn" onclick="saveSettings()">સેવ કરો</button>
-            <p style="font-size: 10px; margin-top: 10px; color: #888;">જો લિમિટ પૂરી થાય તો આપોઆપ બીજી કી લેશે.</p>
         </div>
     </div>
 
@@ -69,141 +68,135 @@
     </div>
 
     <script>
-        let userName = localStorage.getItem('bn_user') || "દેવેન્દ્રભાઈ";
-        let apiKeysStr = localStorage.getItem('bn_key') || "";
-        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.0-flash-exp";
-        let lastReport = "";
+        let userName = localStorage.getItem('bn_user') || "સાહેબ"
+        let apiKeysStr = localStorage.getItem('bn_key') || ""
+        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.5-flash"
+        let lastReport = ""
 
-        const videos = { silent: document.getElementById('silent-video'), talking: document.getElementById('talking-video'), thinking: document.getElementById('thinking-video'), smiling: document.getElementById('smiling-video') };
-        const statusText = document.getElementById('status-text');
-        const cameraFeed = document.getElementById('camera-feed');
-        const canvas = document.getElementById('canvas-capture');
-        const errorLog = document.getElementById('error-log');
+        const videos = { silent: document.getElementById('silent-video'), talking: document.getElementById('talking-video'), thinking: document.getElementById('thinking-video'), smiling: document.getElementById('smiling-video') }
+        const statusText = document.getElementById('status-text')
+        const cameraFeed = document.getElementById('camera-feed')
+        const canvas = document.getElementById('canvas-capture')
+        const errorLog = document.getElementById('error-log')
 
         window.onload = () => {
-            playVideo('smiling');
-            setTimeout(() => { speak(`જય શ્રી કૃષ્ણ ${userName} બાળ નિદાન પ્રો સેટિંગ્સ ચેક કરી લો`) }, 1000);
-        };
+            playVideo('smiling')
+            setTimeout(() => { speak(`જય શ્રી કૃષ્ણ ${userName} હવે માત્ર ૨.૫ ફ્લેશ અને પ્રો મોડેલ જ ચાલશે`) }, 1000)
+        }
 
         function playVideo(type) {
-            Object.values(videos).forEach(v => { v.style.display = 'none'; v.pause(); });
-            if(videos[type]) { videos[type].style.display = 'block'; videos[type].play().catch(()=>{}); }
+            Object.values(videos).forEach(v => { v.style.display = 'none'; v.pause() })
+            if(videos[type]) { videos[type].style.display = 'block'; videos[type].play().catch(()=>{}) }
         }
 
         function speak(text) {
-            window.speechSynthesis.cancel();
-            let clean = text.replace(/[.,!?;:*#_]/g, ""); 
-            const u = new SpeechSynthesisUtterance(clean);
-            u.lang = 'gu-IN'; u.rate = 0.75;
-            u.onstart = () => playVideo('talking');
-            u.onend = () => { playVideo('smiling'); setTimeout(() => playVideo('silent'), 3000); };
-            window.speechSynthesis.speak(u);
+            window.speechSynthesis.cancel()
+            let clean = text.replace(/[.,!?;:*#_]/g, "") 
+            const u = new SpeechSynthesisUtterance(clean)
+            u.lang = 'gu-IN'; u.rate = 0.75
+            u.onstart = () => playVideo('talking')
+            u.onend = () => { playVideo('smiling'); setTimeout(() => playVideo('silent'), 3000) }
+            window.speechSynthesis.speak(u)
         }
 
-        function stopSpeech() { window.speechSynthesis.cancel(); playVideo('silent'); statusText.innerText = "અવાજ બંધ"; }
+        function stopSpeech() { window.speechSynthesis.cancel(); playVideo('silent'); statusText.innerText = "અવાજ બંધ" }
 
         async function activateScan() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                cameraFeed.srcObject = stream;
-                cameraFeed.style.display = 'block';
-                statusText.innerText = "બાળકનો ફોટો લો";
-                document.getElementById('scan-btn').onclick = capturePhoto;
-            } catch(e) { showError("કેમેરા એરર: " + e.message); }
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                cameraFeed.srcObject = stream
+                cameraFeed.style.display = 'block'
+                statusText.innerText = "બાળકનો ફોટો લો"
+                document.getElementById('scan-btn').onclick = capturePhoto
+            } catch(e) { showError("કેમેરા એરર: " + e.message) }
         }
 
         async function capturePhoto() {
-            canvas.width = cameraFeed.videoWidth; canvas.height = cameraFeed.videoHeight;
-            canvas.getContext('2d').drawImage(cameraFeed, 0, 0);
-            cameraFeed.srcObject.getTracks().forEach(t => t.stop());
-            cameraFeed.style.display = 'none';
-            document.getElementById('scan-btn').onclick = activateScan;
+            canvas.width = cameraFeed.videoWidth; canvas.height = cameraFeed.videoHeight
+            canvas.getContext('2d').drawImage(cameraFeed, 0, 0)
+            cameraFeed.srcObject.getTracks().forEach(t => t.stop())
+            cameraFeed.style.display = 'none'
+            document.getElementById('scan-btn').onclick = activateScan
             
-            playVideo('thinking');
-            statusText.innerText = "વિશ્લેષણ ચાલુ છે...";
-            const base64Image = canvas.toDataURL('image/jpeg', 0.5).split(',')[1];
-            await callGemini(base64Image);
+            playVideo('thinking')
+            statusText.innerText = "વિશ્લેષણ ચાલુ છે"
+            const base64Image = canvas.toDataURL('image/jpeg', 0.5).split(',')[1]
+            await callGemini(base64Image)
         }
 
         function handleGalleryUpload(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
+            const file = e.target.files[0]
+            const reader = new FileReader()
             reader.onload = async (event) => {
-                const base64 = event.target.result.split(',')[1];
-                playVideo('thinking');
-                await callGemini(base64);
-            };
-            reader.readAsDataURL(file);
+                const base64 = event.target.result.split(',')[1]
+                playVideo('thinking')
+                await callGemini(base64)
+            }
+            reader.readAsDataURL(file)
         }
 
         async function callGemini(base64) {
-            errorLog.style.display = 'none';
-            if(!apiKeysStr) return speak("સેટિંગ્સમાં API કી ઉમેરો");
+            errorLog.style.display = 'none'
+            if(!apiKeysStr) return speak("સેટિંગ્સમાં એ પી આઈ કી ઉમેરો")
             
-            const keys = apiKeysStr.split(',').map(k => k.trim()).filter(k => k);
-            const prompt = "તું નિષ્ણાત બાળ રોગ નિષ્ણાત છે આ ફોટા પરથી બાળકની આંખો અને નખ તપાસી નિદાન આપ અને પોષણ માટે આહારની સલાહ ગુજરાતીમાં આપ";
+            const keys = apiKeysStr.split(',').map(k => k.trim()).filter(k => k)
+            const prompt = "તું નિષ્ણાત બાળ રોગ નિષ્ણાત છે આ ફોટા પરથી બાળકની આંખો અને નખ તપાસી નિદાન આપ અને પોષણ માટે આહારની સલાહ ગુજરાતીમાં આપ"
 
             for (let i = 0; i < keys.length; i++) {
-                const currentKey = keys[i];
+                const currentKey = keys[i]
                 try {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${currentKey}`;
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${currentKey}`
                     const response = await fetch(url, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] }] })
-                    });
+                    })
                     
-                    const data = await response.json();
+                    const data = await response.json()
                     
                     if(data.error) {
                         if(data.error.status === "RESOURCE_EXHAUSTED") {
-                            console.warn(`Key ${i+1} exhausted. Trying next...`);
-                            if (i === keys.length - 1) {
-                                showError("બધી API કીની લિમિટ પૂરી થઈ ગઈ છે. કૃપા કરીને થોડી વાર પછી પ્રયત્ન કરો.");
-                                speak("ક્ષમા કરજો અત્યારે મારી બધી લિમિટ પૂરી થઈ ગઈ છે");
-                            }
-                            continue; // Try next key
+                            continue // Try next key
                         } else {
-                            showError("Error: " + data.error.message);
-                            return;
+                            showError("Error: " + data.error.message)
+                            return
                         }
                     }
 
                     if(data.candidates && data.candidates[0].content) {
-                        lastReport = data.candidates[0].content.parts[0].text;
-                        speak(lastReport);
-                        document.getElementById('pdf-btn').style.display = 'flex';
-                        statusText.innerText = "નિદાન તૈયાર છે";
-                        return; // Success!
+                        lastReport = data.candidates[0].content.parts[0].text
+                        speak(lastReport)
+                        document.getElementById('pdf-btn').style.display = 'flex'
+                        statusText.innerText = "નિદાન તૈયાર છે"
+                        return 
                     }
-                } catch(e) { 
-                    showError("નેટવર્ક એરર: " + e.message);
-                }
+                } catch(e) { showError("નેટવર્ક એરર: " + e.message) }
             }
+            speak("બધી લિમિટ પૂરી થઈ ગઈ છે અથવા કી ખોટી છે")
         }
 
-        function showError(msg) { errorLog.innerText = msg; errorLog.style.display = 'block'; }
+        function showError(msg) { errorLog.innerText = msg; errorLog.style.display = 'block' }
 
         function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text("Bal Nidan Pro - Health Report", 20, 20);
-            const splitText = doc.splitTextToSize(lastReport, 170);
-            doc.text(splitText, 20, 40);
-            doc.save(`BalReport_${new Date().getTime()}.pdf`);
+            const { jsPDF } = window.jspdf
+            const doc = new jsPDF()
+            doc.text("Bal Nidan Pro Report", 20, 20)
+            const splitText = doc.splitTextToSize(lastReport, 170)
+            doc.text(splitText, 20, 40)
+            doc.save(`Report_${new Date().getTime()}.pdf`)
         }
 
         function openSettings() { 
-            document.getElementById('settings-modal').style.display = 'flex';
-            document.getElementById('userNameInput').value = userName;
-            document.getElementById('geminiKeyInput').value = apiKeysStr;
-            document.getElementById('modelSelect').value = selectedModel;
+            document.getElementById('settings-modal').style.display = 'flex'
+            document.getElementById('userNameInput').value = userName
+            document.getElementById('geminiKeyInput').value = apiKeysStr
+            document.getElementById('modelSelect').value = selectedModel
         }
         function saveSettings() {
-            localStorage.setItem('bn_user', document.getElementById('userNameInput').value);
-            localStorage.setItem('bn_key', document.getElementById('geminiKeyInput').value);
-            localStorage.setItem('bn_model', document.getElementById('modelSelect').value);
-            location.reload();
+            localStorage.setItem('bn_user', document.getElementById('userNameInput').value)
+            localStorage.setItem('bn_key', document.getElementById('geminiKeyInput').value)
+            localStorage.setItem('bn_model', document.getElementById('modelSelect').value)
+            location.reload()
         }
     </script>
 </body>
