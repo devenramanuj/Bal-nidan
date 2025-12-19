@@ -10,40 +10,33 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #050505; font-family: 'Segoe UI', sans-serif; color: white; user-select: none; }
         #video-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: #000; }
         video { width: 100%; height: 100%; object-fit: cover; position: absolute; display: none; }
-        #camera-feed { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 5; border: 4px solid #00ff88; }
-        .header-title { position: fixed; top: 15px; left: 20px; z-index: 20; color: #00ff88; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px rgba(0,255,136,0.5); }
+        .header-title { position: fixed; top: 15px; left: 20px; z-index: 20; color: #00ff88; font-weight: bold; font-size: 16px; line-height: 1.4; }
+        #report-content { position: absolute; left: -9999px; background: white; color: black; padding: 30px; width: 600px; }
+        .report-header { text-align: center; border-bottom: 3px solid #1a5d1a; padding-bottom: 10px; margin-bottom: 20px; }
+        .report-body { font-size: 14px; line-height: 1.6; white-space: pre-wrap; color: #000; }
         .side-btn { position: fixed; top: 20px; right: 20px; z-index: 20; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100; flex-direction: column; justify-content: center; align-items: center; }
         .settings-box { background: #1a1a1a; padding: 25px; border-radius: 20px; width: 85%; max-width: 350px; border: 1px solid #00ff88; text-align: center; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #2a2a2a; color: white; border: 1px solid #444; border-radius: 10px; box-sizing: border-box; }
-        .save-btn { width: 100%; padding: 12px; background: #00ff88; border: none; font-weight: bold; cursor: pointer; color: #000; border-radius: 10px; margin-top: 10px; }
-        #status-text { color: white; position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); z-index: 20; font-size: 15px; background: rgba(0,255,136,0.2); padding: 10px 25px; border-radius: 30px; border: 1px solid #00ff88; backdrop-filter: blur(10px); text-align: center; min-width: 200px; }
-        #controls-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 15px; align-items: center; }
-        .action-btn { width: 60px; height: 60px; border-radius: 50%; border: none; color: white; font-size: 24px; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.2s; }
-        #scan-btn { width: 80px; height: 80px; background: #00ff88; color: #000; font-size: 30px; }
-        
-        #report-content { position: absolute; left: -9999px; background: white; color: black; padding: 40px; width: 750px; font-family: 'Segoe UI', sans-serif; }
-        .report-header { text-align: center; border-bottom: 4px solid #1a5d1a; margin-bottom: 25px; padding-bottom: 10px; }
-        .report-body { font-size: 16px; line-height: 1.8; white-space: pre-wrap; text-align: justify; }
-        .footer-note { margin-top: 40px; font-size: 12px; border-top: 1px solid #ddd; padding-top: 10px; color: #555; }
+        #status-text { color: white; position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); z-index: 20; font-size: 14px; background: rgba(0,255,136,0.2); padding: 10px 20px; border-radius: 30px; border: 1px solid #00ff88; text-align: center; }
+        #controls-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 15px; }
+        .action-btn { width: 60px; height: 60px; border-radius: 50%; border: none; color: white; font-size: 24px; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
     <div class="header-title">
         બાળ નિદાન Pro <br>
-        <span style="font-size: 11px; font-weight: normal; color: #ccc;">Devloped by -Devendra Ramanuj, 9276505035</span>
+        <span style="font-size: 11px; font-weight: normal;">Devloped by -Devendra Ramanuj, 9276505035</span>
     </div>
-    
+
     <div id="report-content">
         <div class="report-header">
-            <h1 style="color: #1a5d1a; margin: 0;">બાળ સ્વાસ્થ્ય અને પોષણ અહેવાલ</h1>
-            <p style="margin: 5px 0; font-weight: bold; font-size: 14px;">Devloped by -Devendra Ramanuj, 9276505035</p>
+            <h2 style="color: #1a5d1a; margin: 0;">બાળ સ્વાસ્થ્ય તપાસ અહેવાલ</h2>
+            <p style="margin: 5px 0; font-size: 12px;">Devloped by -Devendra Ramanuj, 9276505035</p>
         </div>
         <div id="pdf-text" class="report-body"></div>
-        <div class="footer-note">
-            આ એઆઈ દ્વારા તૈયાર કરેલ પ્રાથમિક તપાસ અહેવાલ છે વધુ વિગતો માટે ડૉક્ટરનો સંપર્ક કરવો
-            <br>તારીખ: <span id="report-date"></span>
+        <div style="margin-top: 20px; font-size: 10px; color: #666; border-top: 1px solid #ddd;">
+            તારીખ: <span id="report-date"></span>
         </div>
     </div>
 
@@ -53,155 +46,78 @@
         <video id="v-thinking" muted loop playsinline><source src="thinking.mp4" type="video/mp4"></video>
         <video id="v-smiling" autoplay loop playsinline><source src="smiling.mp4" type="video/mp4"></video>
     </div>
-    
-    <video id="camera-feed" autoplay playsinline></video>
+
+    <video id="camera-feed" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:5;" autoplay playsinline></video>
     <canvas id="canvas-capture" style="display:none;"></canvas>
-    <input type="file" id="gallery-input" accept="image/*" style="display:none" onchange="handleGalleryUpload(event)">
 
     <button class="side-btn" onclick="openSettings()"><i class="fas fa-cog"></i></button>
 
     <div id="settings-modal" class="modal">
         <div class="settings-box">
-            <h3 style="color:#00ff88;">સેટિંગ્સ</h3>
-            <input type="text" id="userNameInput" placeholder="તમારું નામ">
-            <select id="modelSelect">
-                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite (Working)</option>
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-            </select>
-            <textarea id="geminiKeyInput" rows="3" placeholder="તમારી API Key અહીં નાખો"></textarea>
-            <button class="save-btn" onclick="saveSettings()">સેવ અને રીલોડ</button>
-            <button style="background:none; color:#ff3b30; border:none; margin-top:15px; cursor:pointer;" onclick="closeSettings()">બંધ કરો</button>
+            <h3 style="color:#00ff88;">API સેટિંગ્સ</h3>
+            <textarea id="key1" placeholder="API Key 1 (Main)" style="width:100%; margin:5px 0; background:#2a2a2a; color:white; border:1px solid #444; border-radius:8px; padding:8px;"></textarea>
+            <textarea id="key2" placeholder="API Key 2 (Backup)" style="width:100%; margin:5px 0; background:#2a2a2a; color:white; border:1px solid #444; border-radius:8px; padding:8px;"></textarea>
+            <button onclick="saveSettings()" style="width:100%; padding:10px; background:#00ff88; border:none; font-weight:bold; border-radius:8px; cursor:pointer;">સેવ કરો</button>
+            <p style="font-size:10px; margin-top:10px; color:#ccc;">લિમિટ બચાવવા Flash-Lite મોડેલ સેટ કરેલ છે</p>
         </div>
     </div>
 
     <div id="status-text">જય શ્રી કૃષ્ણ</div>
 
     <div id="controls-container">
-        <button class="action-btn" style="background:#008cff" onclick="document.getElementById('gallery-input').click()"><i class="fas fa-images"></i></button>
-        <button id="scan-btn" class="action-btn" onclick="activateScan()"><i class="fas fa-notes-medical"></i></button>
+        <button class="action-btn" style="background:#008cff" onclick="activateScan()"><i class="fas fa-camera"></i></button>
         <button id="pdf-btn" class="action-btn" style="background:#ff9f00; display:none;" onclick="generatePDF()"><i class="fas fa-file-pdf"></i></button>
-        <button class="action-btn" style="background:#ff3b30" onclick="stopEverything()"><i class="fas fa-stop"></i></button>
     </div>
 
     <script>
-        let userName = localStorage.getItem('bn_user') || "દેવેન્દ્રભાઈ";
-        let apiKey = localStorage.getItem('bn_key') || "";
-        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.5-flash-lite"; // ૨.૫ લાઈટ મોડેલ ડિફોલ્ટ
+        let keys = [localStorage.getItem('key1') || "", localStorage.getItem('key2') || ""];
         let lastReport = "";
 
-        const videoElements = {
-            silent: document.getElementById('v-silent'),
-            talking: document.getElementById('v-talking'),
-            thinking: document.getElementById('v-thinking'),
-            smiling: document.getElementById('v-smiling')
-        };
+        const videoElements = { silent: document.getElementById('v-silent'), talking: document.getElementById('v-talking'), thinking: document.getElementById('v-thinking'), smiling: document.getElementById('v-smiling') };
 
-        window.onload = () => {
-            playVideo('smiling');
-            setTimeout(() => { speak(`જય શ્રી કૃષ્ણ ${userName} સિયા મદદ માટે તૈયાર છે`) }, 1200);
-        };
+        function playVideo(type) { Object.values(videoElements).forEach(v => { v.style.display = 'none'; v.pause(); }); if(videoElements[type]) { videoElements[type].style.display = 'block'; videoElements[type].play().catch(()=>{}); } }
 
-        function playVideo(type) {
-            Object.values(videoElements).forEach(v => { v.style.display = 'none'; v.pause(); });
-            if(videoElements[type]) {
-                videoElements[type].style.display = 'block';
-                videoElements[type].play().catch(()=>{});
-            }
-        }
-
-        function speak(text) {
-            window.speechSynthesis.cancel();
-            const cleanText = text.replace(/[.,!?;:*#_]/g, ""); 
-            const utter = new SpeechSynthesisUtterance(cleanText);
-            utter.lang = 'gu-IN';
-            utter.rate = 0.85;
-            utter.onstart = () => playVideo('talking');
-            utter.onend = () => { playVideo('smiling'); setTimeout(() => playVideo('silent'), 3000); };
-            window.speechSynthesis.speak(utter);
-        }
-
-        function stopEverything() {
-            window.speechSynthesis.cancel();
-            playVideo('silent');
-            const cameraFeed = document.getElementById('camera-feed');
-            if(cameraFeed.srcObject) cameraFeed.srcObject.getTracks().forEach(t => t.stop());
-            cameraFeed.style.display = 'none';
-        }
+        function speak(text) { window.speechSynthesis.cancel(); const utter = new SpeechSynthesisUtterance(text.replace(/[.,!?;:*#_]/g, "")); utter.lang = 'gu-IN'; utter.onstart = () => playVideo('talking'); utter.onend = () => playVideo('smiling'); window.speechSynthesis.speak(utter); }
 
         async function activateScan() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                const cameraFeed = document.getElementById('camera-feed');
-                cameraFeed.srcObject = stream;
-                cameraFeed.style.display = 'block';
-                document.getElementById('status-text').innerText = "ફોટો લો";
-                document.getElementById('scan-btn').onclick = captureAndAnalyze;
-            } catch(e) { alert("કેમેરા પરમિશન આપો"); }
-        }
-
-        async function captureAndAnalyze() {
-            const cameraFeed = document.getElementById('camera-feed');
-            const canvas = document.getElementById('canvas-capture');
-            canvas.width = cameraFeed.videoWidth;
-            canvas.height = cameraFeed.videoHeight;
-            canvas.getContext('2d').drawImage(cameraFeed, 0, 0);
-            stopEverything();
-            playVideo('thinking');
-            document.getElementById('status-text').innerText = "વિશ્લેષણ ચાલુ છે";
-            const base64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
-            await callGeminiAI(base64);
-            document.getElementById('scan-btn').onclick = activateScan;
-        }
-
-        async function handleGalleryUpload(e) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                const base64 = event.target.result.split(',')[1];
-                playVideo('thinking');
-                await callGeminiAI(base64);
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            const feed = document.getElementById('camera-feed');
+            feed.srcObject = stream; feed.style.display = 'block';
+            document.getElementById('status-text').innerText = "ફોટો લો";
+            feed.onclick = async () => {
+                const canvas = document.getElementById('canvas-capture');
+                canvas.width = feed.videoWidth; canvas.height = feed.videoHeight;
+                canvas.getContext('2d').drawImage(feed, 0, 0);
+                stream.getTracks().forEach(t => t.stop()); feed.style.display = 'none';
+                playVideo('thinking'); document.getElementById('status-text').innerText = "તપાસ ચાલુ છે...";
+                const base64 = canvas.toDataURL('image/jpeg', 0.5).split(',')[1];
+                await callAI(base64, 0);
             };
-            reader.readAsDataURL(file);
         }
 
-        async function callGeminiAI(base64) {
-            if(!apiKey) { speak("સેટિંગ્સમાં કી ઉમેરો"); return; }
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
-            // ટૂંકા નિદાન માટેનો પ્રોમ્પ્ટ
-            const prompt = "તું સિયા એઆઈ છે આ ફોટામાં રહેલા બાળકની આંખ જીભ અને નખ જોઈ પોષણનું સ્તર એકદમ ટૂંકમાં અને મુદ્દાસર જણાવો બહુ લાંબું લખાણ ટાળવું અને સીધી જ આહારની સલાહ આપવી ભાષા ગુજરાતી રાખવી";
-
+        async function callAI(base64, keyIndex) {
+            if(keyIndex >= keys.length || !keys[keyIndex]) { speak("બધી જ કી ની લિમિટ પૂરી થઈ ગઈ છે"); return; }
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${keys[keyIndex]}`;
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] }]
-                    })
-                });
-                const data = await response.json();
-                if(data.error) throw new Error(data.error.message);
+                const res = await fetch(url, { method: 'POST', body: JSON.stringify({ contents: [{ parts: [{ text: "બાળકની આંખ અને જીભ જોઈ ટૂંકું નિદાન અને આહાર સલાહ ગુજરાતીમાં આપો" }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] }] }) });
+                const data = await res.json();
+                if(data.error) throw new Error();
                 lastReport = data.candidates[0].content.parts[0].text;
                 speak(lastReport);
                 document.getElementById('pdf-btn').style.display = 'flex';
                 document.getElementById('status-text').innerText = "રિપોર્ટ તૈયાર";
-            } catch (err) {
-                console.error(err);
-                speak("માફ કરશો અત્યારે કી ની લિમિટ પૂરી થઈ ગઈ છે");
-            }
+            } catch { await callAI(base64, keyIndex + 1); }
         }
 
         function generatePDF() {
             const element = document.getElementById('report-content');
             document.getElementById('pdf-text').innerText = lastReport;
             document.getElementById('report-date').innerText = new Date().toLocaleString('gu-IN');
-            const options = { margin: 0.5, filename: `Siya_Report_${new Date().getTime()}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
-            html2pdf().from(element).set(options).save().then(() => { speak("રિપોર્ટ ડાઉનલોડ થઈ ગયો છે") });
+            html2pdf().from(element).set({ margin: 1, filename: 'Report.pdf', html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'letter' } }).save();
         }
 
-        function openSettings() { document.getElementById('settings-modal').style.display = 'flex'; document.getElementById('userNameInput').value = userName; document.getElementById('geminiKeyInput').value = apiKey; document.getElementById('modelSelect').value = selectedModel; }
-        function closeSettings() { document.getElementById('settings-modal').style.display = 'none'; }
-        function saveSettings() { localStorage.setItem('bn_user', document.getElementById('userNameInput').value); localStorage.setItem('bn_key', document.getElementById('geminiKeyInput').value); localStorage.setItem('bn_model', document.getElementById('modelSelect').value); location.reload(); }
+        function openSettings() { document.getElementById('settings-modal').style.display = 'flex'; document.getElementById('key1').value = keys[0]; document.getElementById('key2').value = keys[1]; }
+        function saveSettings() { localStorage.setItem('key1', document.getElementById('key1').value); localStorage.setItem('key2', document.getElementById('key2').value); location.reload(); }
     </script>
 </body>
 </html>
