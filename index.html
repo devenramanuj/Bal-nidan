@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>બાળ નિદાન Pro - 2.5 Edition</title>
+    <title>બાળ નિદાન Pro - Final Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -25,7 +25,6 @@
         .action-btn { width: 55px; height: 55px; border-radius: 50%; border: none; color: white; font-size: 22px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         #scan-btn { width: 75px; height: 75px; background: #00ff88; color: #000; font-size: 28px; }
         #pdf-btn { background: #ff9f00; display: none; }
-        #stop-btn { background: #ff3b30; }
     </style>
 </head>
 <body>
@@ -49,38 +48,30 @@
         <div class="settings-box">
             <h3>બાળ નિદાન સેટિંગ્સ</h3>
             <input type="text" id="userNameInput" placeholder="તમારું નામ">
-            <div style="text-align: left; font-size: 12px; margin-bottom: 5px; color: #00ff88;">Working Models Only:</div>
-            
-            <select id="flashModelSelect">
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash ⚡</option>
-                <option value="gemini-2.0-flash">Gemini 2.0 Flash 🚀</option>
+            <select id="modelSelect">
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Fast)</option>
+                <option value="gemini-2.0-pro-exp-02-05">Gemini 2.0 Pro (Most Accurate)</option>
+                <option value="gemini-exp-1206">Gemini Experimental 1206</option>
             </select>
-            
-            <select id="proModelSelect">
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro 🔥</option>
-                <option value="gemini-3.0-flash">Gemini 3.0 Flash 🌟</option>
-            </select>
-            
-            <textarea id="geminiKeyInput" rows="3" placeholder="API Keys અહીં પેસ્ટ કરો..."></textarea>
+            <textarea id="geminiKeyInput" rows="3" placeholder="API Keys (કોમા થી અલગ કરો)"></textarea>
             <button class="save-btn" onclick="saveSettings()">સેવ કરો</button>
         </div>
     </div>
 
     <div id="controls-container">
-        <div id="status-text">સ્કેન કરવા માટે બટન દબાવો</div>
+        <div id="status-text">જય શ્રી કૃષ્ણ</div>
         <div class="btn-row">
             <button id="gallery-btn" class="action-btn" style="background:#008cff" title="ગેલેરી" onclick="document.getElementById('gallery-input').click()"><i class="fas fa-images"></i></button>
             <button id="scan-btn" class="action-btn" title="સ્કેન કરો" onclick="activateScan()"><i class="fas fa-notes-medical"></i></button>
             <button id="pdf-btn" class="action-btn" title="PDF રિપોર્ટ" onclick="generatePDF()"><i class="fas fa-file-pdf"></i></button>
-            <button id="stop-btn" class="action-btn" title="અવાજ બંધ" onclick="stopSpeech()"><i class="fas fa-volume-mute"></i></button>
+            <button id="stop-btn" class="action-btn" style="background:#ff3b30" title="અવાજ બંધ" onclick="stopSpeech()"><i class="fas fa-volume-mute"></i></button>
         </div>
     </div>
 
     <script>
         let userName = localStorage.getItem('bn_user') || "સાહેબ"
-        let apiKey = localStorage.getItem('bn_key') || ""
-        let flashModel = localStorage.getItem('bn_flash_model') || "gemini-2.5-flash"
-        let proModel = localStorage.getItem('bn_pro_model') || "gemini-2.5-pro"
+        let apiKeys = localStorage.getItem('bn_key') || ""
+        let selectedModel = localStorage.getItem('bn_model') || "gemini-2.0-flash"
         let lastReport = ""
 
         const videos = { silent: document.getElementById('silent-video'), talking: document.getElementById('talking-video'), thinking: document.getElementById('thinking-video'), smiling: document.getElementById('smiling-video') }
@@ -90,7 +81,7 @@
 
         window.onload = () => {
             playVideo('smiling')
-            setTimeout(() => { speak(`જય શ્રી કૃષ્ણ ${userName} હવે મેં ૧.૫ મોડેલ દૂર કરી દીધા છે અને માત્ર વર્કિંગ મોડેલ રાખ્યા છે`) }, 1000)
+            setTimeout(() => { speak(`જય શ્રી કૃષ્ણ ${userName} હવે આ એપ તમારી નવી કી સાથે ચાલશે મેં ૧.૫ મોડેલ દૂર કરી દીધા છે`) }, 1000)
         }
 
         function playVideo(type) {
@@ -102,24 +93,22 @@
             window.speechSynthesis.cancel()
             let clean = text.replace(/[.,!?;:*#_]/g, "") 
             const u = new SpeechSynthesisUtterance(clean)
-            u.lang = 'gu-IN'
-            u.rate = 0.75
+            u.lang = 'gu-IN'; u.rate = 0.75
             u.onstart = () => playVideo('talking')
             u.onend = () => { playVideo('smiling'); setTimeout(() => playVideo('silent'), 3000) }
             window.speechSynthesis.speak(u)
         }
 
-        function stopSpeech() { window.speechSynthesis.cancel(); playVideo('silent') }
+        function stopSpeech() { window.speechSynthesis.cancel(); playVideo('silent'); statusText.innerText = "અવાજ બંધ" }
 
         async function activateScan() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                 cameraFeed.srcObject = stream
                 cameraFeed.style.display = 'block'
-                statusText.innerText = "બાળકનો ફોટો લો"
+                statusText.innerText = "ફોટો પાડો"
                 document.getElementById('scan-btn').onclick = capturePhoto
-                speak("બાળકની આંખો અથવા નખનો ફોટો પાડો")
-            } catch(e) { alert("કેમેરા પરમિશન જરૂરી છે") }
+            } catch(e) { alert("કેમેરા પરમિશન આપો") }
         }
 
         async function capturePhoto() {
@@ -130,9 +119,9 @@
             document.getElementById('scan-btn').onclick = activateScan
             
             playVideo('thinking')
-            statusText.innerText = "પ્રો મોડેલ વિશ્લેષણ કરી રહ્યું છે"
+            statusText.innerText = "વિશ્લેષણ ચાલુ છે"
             const base64Image = canvas.toDataURL('image/jpeg', 0.5).split(',')[1]
-            await askGemini(base64Image, true) 
+            await callAi(base64Image)
         }
 
         function handleGalleryUpload(e) {
@@ -141,64 +130,55 @@
             reader.onload = async (event) => {
                 const base64 = event.target.result.split(',')[1]
                 playVideo('thinking')
-                await askGemini(base64, true)
+                await callAi(base64)
             }
             reader.readAsDataURL(file)
         }
 
-        async function askGemini(base64, isAnalysis = false) {
-            if(!apiKey) return speak("સેટિંગ્સમાં એ પી આઈ કી ઉમેરો")
-            
-            const selectedModel = isAnalysis ? proModel : flashModel
-            const prompt = isAnalysis ? 
-                "તું એક અનુભવી ડૉક્ટર છે આ ફોટા પરથી બાળકની આંખો અને નખની સ્થિતિ તપાસીને ગુજરાતીમાં નિદાન આપ અને પોષણ માટે આહારની સલાહ આપ" : 
-                "ગુજરાતીમાં ટૂંકું અભિવાદન કર"
-            
-            try {
-                const keys = apiKey.split(',').map(k => k.trim())
-                const key = keys[Math.floor(Math.random() * keys.length)]
-                
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${key}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] }] })
-                })
-                const data = await res.json()
-                
-                if(data.error) {
-                    speak("આ કી સાથે મોડેલ ચાલતું નથી કૃપા કરીને બીજી કી તપાસો")
-                    return
-                }
+        async function callAi(base64) {
+            if(!apiKeys) return speak("સેટિંગ્સમાં એ પી આઈ કી ઉમેરો")
+            const prompt = "તું નિષ્ણાત બાળ રોગ નિષ્ણાત છે આ ફોટા પરથી બાળકની આંખો અને નખ તપાસી નિદાન આપ અને પોષણ માટે આહારની સલાહ ગુજરાતીમાં આપ"
+            const keys = apiKeys.split(',').map(k => k.trim()).filter(k => k)
 
-                lastReport = data.candidates[0].content.parts[0].text
-                speak(lastReport)
-                if(isAnalysis) document.getElementById('pdf-btn').style.display = 'flex'
-                statusText.innerText = "નિદાન પૂરું થયું"
-            } catch(e) { speak("ક્ષમા કરજો અત્યારે પ્રોસેસ કરવામાં તકલીફ છે") }
+            for (let key of keys) {
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${key}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] }] })
+                    })
+                    const data = await res.json()
+                    if(data.error) continue // Try next key if this one fails
+
+                    lastReport = data.candidates[0].content.parts[0].text
+                    speak(lastReport)
+                    document.getElementById('pdf-btn').style.display = 'flex'
+                    statusText.innerText = "રિપોર્ટ તૈયાર છે"
+                    return
+                } catch(e) { console.log("Key Failed") }
+            }
+            speak("બધી કી ફેલ ગઈ છે અથવા મોડેલ સપોર્ટેડ નથી")
         }
 
         function generatePDF() {
             const { jsPDF } = window.jspdf
             const doc = new jsPDF()
-            doc.text("Child Health Report", 20, 20)
+            doc.text("Child Health & Nutrition Report", 20, 20)
             const splitText = doc.splitTextToSize(lastReport, 170)
             doc.text(splitText, 20, 40)
-            doc.save(`Report_${new Date().getTime()}.pdf`)
-            speak("પી ડી એફ સેવ થઈ ગઈ છે")
+            doc.save(`Bal_Nidan_${new Date().getTime()}.pdf`)
         }
 
         function openSettings() { 
             document.getElementById('settings-modal').style.display = 'flex'
             document.getElementById('userNameInput').value = userName
-            document.getElementById('geminiKeyInput').value = apiKey
-            document.getElementById('flashModelSelect').value = flashModel
-            document.getElementById('proModelSelect').value = proModel
+            document.getElementById('geminiKeyInput').value = apiKeys
+            document.getElementById('modelSelect').value = selectedModel
         }
         function saveSettings() {
             localStorage.setItem('bn_user', document.getElementById('userNameInput').value)
             localStorage.setItem('bn_key', document.getElementById('geminiKeyInput').value)
-            localStorage.setItem('bn_flash_model', document.getElementById('flashModelSelect').value)
-            localStorage.setItem('bn_pro_model', document.getElementById('proModelSelect').value)
+            localStorage.setItem('bn_model', document.getElementById('modelSelect').value)
             location.reload()
         }
     </script>
